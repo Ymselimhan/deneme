@@ -16,6 +16,7 @@ db.Couple = require('./Couple')(sequelize, Sequelize);
 db.Message = require('./Message')(sequelize, Sequelize);
 db.Song = require('./Song')(sequelize, Sequelize);
 db.Memory = require('./Memory')(sequelize, Sequelize);
+db.SpecialDate = require('./SpecialDate')(sequelize, Sequelize);
 
 // İlişkiler
 db.User.belongsTo(db.Couple, { foreignKey: 'coupleId' });
@@ -30,5 +31,8 @@ db.Couple.hasMany(db.Song, { foreignKey: 'coupleId' });
 
 db.Memory.belongsTo(db.Couple, { foreignKey: 'coupleId' });
 db.Couple.hasMany(db.Memory, { foreignKey: 'coupleId' });
+
+db.SpecialDate.belongsTo(db.Couple, { foreignKey: 'coupleId' });
+db.Couple.hasMany(db.SpecialDate, { foreignKey: 'coupleId' });
 
 module.exports = db;

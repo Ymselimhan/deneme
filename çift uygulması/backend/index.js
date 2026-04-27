@@ -66,6 +66,7 @@ require('./routes/chat.routes')(app);
 require('./routes/music.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/memory.routes')(app);
+require('./routes/specialDate.routes')(app);
 
 // Socket.io Mantığı
 io.on('connection', (socket) => {

@@ -1,7 +1,7 @@
 # Active Context
 
 ## Current Focus
-Providing compilation and build instructions for both Backend and Mobile components. Implementing core features (Messaging, Music List) and preparing for Location Tracking.
+Monitoring GitHub Actions builds and preparing for **Push Notification system** implementation. Finalizing UI/UX polish for a premium feel.
 
 ## Recent Changes
 - **Backend Auth & DB**: Implemented JWT-based register/login and partner linking with invite codes.

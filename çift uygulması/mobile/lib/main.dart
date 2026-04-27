@@ -6,6 +6,7 @@ import 'screens/chat_screen.dart';
 import 'screens/music_screen.dart';
 import 'screens/location_screen.dart';
 import 'screens/gallery_screen.dart';
+import 'screens/home_screen.dart';
 import 'services/auth_service.dart';
 
 void main() async {
@@ -84,7 +85,7 @@ class _MainDashboardState extends State<MainDashboard> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Center(child: Text('Anasayfa / Pano', style: TextStyle(fontSize: 24))),
+    HomeScreen(),
     ChatScreen(),
     MusicScreen(),
     LocationScreen(),
