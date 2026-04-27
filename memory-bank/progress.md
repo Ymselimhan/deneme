@@ -18,7 +18,7 @@
 
 ## What's left to build
 - [x] Special Dates & Countdown module.
-- [ ] Push Notification system.
+- [/] Push Notification system.
 - [ ] Background location optimization.
 - [ ] Final UI polish and platform-specific configurations.
 

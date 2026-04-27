@@ -28,16 +28,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd "çift uygulması/mobile"
+          cd mobile
           flutter pub get
 
       - name: Build APK
         run: |
-          cd "çift uygulması/mobile"
+          cd mobile
           flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
-          path: "çift uygulması/mobile/build/app/outputs/flutter-apk/app-release.apk"
+          path: mobile/build/app/outputs/flutter-apk/app-release.apk
