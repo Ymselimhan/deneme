@@ -1,0 +1,22 @@
+const jwt = require('jsonwebtoken');
+
+verifyToken = (req, res, next) => {
+  let token = req.headers["x-access-token"];
+
+  if (!token) {
+    return res.status(403).send({ message: "Token sağlanmadı!" });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET || 'secret-key', (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "Yetkisiz!" });
+    }
+    req.userId = decoded.id;
+    next();
+  });
+};
+
+const authJwt = {
+  verifyToken: verifyToken
+};
+module.exports = authJwt;

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çift Uygulaması - Sunucu Kontrol Paneli</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff4d94;
+            --secondary: #ff80ab;
+            --dark: #0f0c29;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Arka plan animasyonu */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            filter: blur(150px);
+            border-radius: 50%;
+            top: 10%;
+            left: 10%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 90%;
+            max-width: 850px;
+            background: var(--glass);
+            backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: 60px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 25px;
+            border-radius: 100px;
+            background: rgba(0, 255, 127, 0.1);
+            color: #00ff7f;
+            font-weight: 600;
+            margin-bottom: 40px;
+            border: 1px solid rgba(0, 255, 127, 0.2);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff7f;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff7f;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 35px 25px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card i {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 1px;
+        }
+
+        /* MOBIL DÜZENLEMELER */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                padding: 40px 20px;
+                border-radius: 25px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .status {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+                margin-bottom: 30px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr; /* Mobilde tek sütun */
+                gap: 15px;
+            }
+
+            .card {
+                padding: 25px 20px;
+            }
+
+            .card i {
+                font-size: 2rem;
+                margin-bottom: 15px;
+            }
+
+            .card h3 {
+                font-size: 1.2rem;
+            }
+
+            .card p {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Çift Uygulaması</h1>
+        <p style="color: rgba(255,255,255,0.5); font-size: 1.1rem; margin-bottom: 30px;">Premium Self-Hosted Server</p>
+        
+        <div class="status">
+            <span class="status-dot"></span>
+            Sunucu Aktif
+        </div>
+
+        <div class="grid">
+            <div class="card" onclick="alert('Mobil uygulamadan yapılandırın')">
+                <i class="fas fa-cog"></i>
+                <h3>Sistem Ayarları</h3>
+                <p>Bağlantı noktaları, güvenlik protokolleri ve API yönetimi.</p>
+            </div>
+            <div class="card" onclick="alert('Veritabanı bağlantısı sağlıklı.')">
+                <i class="fas fa-database"></i>
+                <h3>Veritabanı</h3>
+                <p>PostgreSQL durumu, aktif kullanıcılar ve depolama istatistikleri.</p>
+            </div>
+            <div class="card" id="log-card">
+                <i class="fas fa-terminal"></i>
+                <h3>Sistem Günlüğü</h3>
+                <p>Canlı trafik izleme, hata logları ve servis aktiviteleri.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 Çift Uygulaması &bull; Tüm Hakları Saklıdır
+        </div>
+    </div>
+
+    <!-- Sistem Günlüğü Modal -->
+    <div id="log-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-terminal"></i> Sunucu Günlüğü</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div id="log-container" class="log-container">
+                <div class="log-entry system">Sistem günlüğü başlatıldı...</div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #000;
+            margin: 5% auto;
+            padding: 0;
+            border: 1px solid #333;
+            width: 80%;
+            max-width: 1000px;
+            height: 70vh;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(255, 77, 148, 0.2);
+        }
+
+        .modal-header {
+            padding: 15px 25px;
+            background: #111;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            color: #ccc;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .close {
+            color: #555;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--primary);
+        }
+
+        .log-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #ddd;
+            background: #000;
+        }
+
+        .log-entry {
+            margin-bottom: 5px;
+            word-break: break-all;
+            border-left: 2px solid transparent;
+            padding-left: 10px;
+        }
+
+        .log-entry .timestamp {
+            color: #666;
+            margin-right: 10px;
+            font-size: 0.8rem;
+        }
+
+        .log-entry.log { border-left-color: #00ff7f; }
+        .log-entry.error { border-left-color: #ff4d4d; color: #ff8080; }
+        .log-entry.warn { border-left-color: #ffcc00; color: #ffe680; }
+        .log-entry.system { border-left-color: var(--primary); color: var(--secondary); font-style: italic; }
+
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 95%;
+                height: 85vh;
+                margin: 2.5% auto;
+            }
+        }
+    </style>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const modal = document.getElementById("log-modal");
+        const logCard = document.getElementById("log-card");
+        const closeBtn = document.querySelector(".close");
+        const logContainer = document.getElementById("log-container");
+
+        logCard.onclick = () => {
+            modal.style.display = "block";
+        }
+
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+        }
+
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        socket.on('system_log', (entry) => {
+            const div = document.createElement('div');
+            div.className = `log-entry ${entry.type}`;
+            
+            const ts = document.createElement('span');
+            ts.className = 'timestamp';
+            ts.textContent = `[${entry.timestamp}]`;
+            
+            const msg = document.createElement('span');
+            msg.textContent = entry.message;
+            
+            div.appendChild(ts);
+            div.appendChild(msg);
+            
+            logContainer.appendChild(div);
+            
+            // Auto scroll
+            logContainer.scrollTop = logContainer.scrollHeight;
+
+            // Limit logs to last 100 entries to prevent memory issues
+            if (logContainer.childNodes.length > 100) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
+        });
+
+        socket.on('connect', () => {
+            addSystemLog('Sunucu bağlantısı kuruldu.');
+        });
+
+        socket.on('disconnect', () => {
+            addSystemLog('Sunucu bağlantısı kesildi.');
+        });
+
+        function addSystemLog(message) {
+            const div = document.createElement('div');
+            div.className = 'log-entry system';
+            div.innerHTML = `<span class="timestamp">[${new Date().toLocaleTimeString()}]</span> ${message}`;
+            logContainer.appendChild(div);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>

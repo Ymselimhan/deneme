@@ -1,0 +1,29 @@
+services:
+  backend:
+    build: ./backend
+    container_name: cift-app-backend
+    ports:
+      - "3456:3456"
+    environment:
+      - PORT=3456
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:password@db:5432/cift_app
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:18-alpine
+    container_name: cift-app-db
+    restart: always
+    environment:
+      POSTGRES_DB: cift_app
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:
